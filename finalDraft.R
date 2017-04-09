@@ -110,7 +110,7 @@ efa_splits <- fa(sdata[, -c(11,9,25,13,23,7)], nfactors = 3, rotate = "varimax",
 efa_splits
 
 loadings(efa_splits)
-factor.plot(efa, labels = rownames(efa_splits$loadings)) #??
+factor.plot(efa_splits, labels = rownames(efa_splits$loadings)) #?? should be
 fa.diagram(efa_splits) # shows contents of each factor
 
 
