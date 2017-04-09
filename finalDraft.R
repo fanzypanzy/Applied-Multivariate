@@ -10,6 +10,8 @@ library(HapEstXXR)
 library(nFactors)
 library(cluster)
 library(rgl)
+library(plot3D)
+library(RColorBrewer)
 # TODO: Check that we're actually using each library
 ####################### DATA CLEANING #############################
 
@@ -166,6 +168,17 @@ plot(1:15, wss, type="b", xlab="Number of Clusters",
 plot(1:15, perc_explained, type="b", xlab="Number of Clusters",
      ylab="Percent of Variance explained")
 
+# Look at gap statistic and CH index as criteria. Function for gap is clusGap.
+# I can't get it to work for hierarchical though (Fanny). Also don't really understand it
+# http://www.stat.cmu.edu/~ryantibs/datamining/lectures/06-clus3.pdf
+
+gaps <- clusGap(efa_splits$scores,
+        FUN = kmeans, 
+        K.max = 20, 
+        B = 20)
+plot(gaps$Tab[,3])
+
+
 # 3) Bing in external variables (gender/age/experience)
 with(model2, table(cluster,cdata$GENDER))
 with(model2, table(cluster,cdata$DRIVERLICENSE1))
@@ -180,6 +193,24 @@ plot3d(efa_splits$scores[,1:3], col=result, main="Hierarchical clusters")
 
 pairs(efa_splits$scores[,1:3], col=model2$cluster, labels = c("reckless", "intoxicated", "distracted"),
       pch = cdata$GENDER)
+
+# Pretty 3D plots (not done yet)
+
+scatter3D(efa_splits$scores[,1], efa_splits$scores[,2], efa_splits$scores[,3], bty = "g", pch = 18, 
+          col.var = model2$cluster, 
+          col = brewer.pal(6, "Dark2"),
+          pch = 18, ticktype = "detailed",
+          colkey = list(side = 2, at = 1:6, length = 1, width = 1,
+                        labels = c("setosa", "versicolor", "virginica", "a", "b", "c")),
+          theta = 30, phi = 25,
+          xlab = "Reckless", ylab = "Intoxicated", zlab = "Distracted")
+
+
+
+
+
+
+
 
 
 
