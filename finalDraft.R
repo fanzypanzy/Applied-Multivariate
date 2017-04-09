@@ -163,5 +163,9 @@ clusplot(efa_splits$scores, model2$cluster, color = TRUE, shade = TRUE, labels =
 plot3d(efa_splits$scores[,1:3], col=model2$cluster, main="k-means clusters")
 plot3d(efa_splits$scores[,1:3], col=result, main="Hierarchical clusters")
 
+pairs(efa_splits$scores[,1:3], col=model2$cluster, labels = c("reckless", "intoxicated", "distracted"),
+      pch = cdata$GENDER)
+
+
 
 
