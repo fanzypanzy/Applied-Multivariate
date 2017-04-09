@@ -57,7 +57,8 @@ stopCluster(cl)
 sum(is.na(cdata))
 
 write.csv(cdata, "imputed_dat.csv") 
-
+cdata <- read.csv("imputed_dat.csv")
+cdata <- cdata[,-1]
 
 
 
