@@ -7,6 +7,7 @@ library(mlr)
 library(psych)
 library(GPArotation)
 library(HapEstXXR)
+library(nFactors)
 # TODO: Check that we're actually using each library
 heyyyy
 ####################### DATA CLEANING #############################
@@ -75,8 +76,12 @@ efa_pro <- fa(cdata[,4:31], nfactors = 3, rotate = "promax", scores = T, fm = "p
 
 
 #2. Choose number of factors (-> Liangliang code)
-fa.parallel(cdata[,4:31], fa = "fa", n.iter = 100, show.legend = FALSE) # shows number of factors to use
-
+# shows number of factors to use
+ev <- eigen(cor(cdata[,4:31])) # get eigenvalues
+ap <- parallel(subject = nrow(cdata[,4:31]), var = ncol(cdata[,4:31]),
+               rep = 100, cent = 0.05)
+nS <- nScree(x = ev$values, aparallel = ap$eigen$qevpea)
+plotnScree(nS)
 
 
 #3. decide how to deal with complex items
