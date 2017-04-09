@@ -150,6 +150,7 @@ model1 <- hclust(dist.e, method = 'ward')
 result <- cutree(model1, k=3)
 
 # k-means clusters
+set.seed(31983)
 model2 <- kmeans(efa_splits$scores, centers = 3, nstart = 100)
 
 # 2) Choose number of clusters
