@@ -109,6 +109,19 @@ fa.diagram(efa_splits) # shows contents of each factor
 
 # 4) Defining factors as indices or scales using Crohnbach's alpha (-> Zhenming)
 
+# Cronbach’s alpha is computed by correlating the score for each scale item with the total score for each observation 
+# (usually individual survey respondents or test takers), and then comparing that to the variance for all individual item scores:
+
+# The resulting alpha coefficient of reliability ranges from 0 to 1 in providing this overall assessment of a measure’s reliability. 
+# the higher the alpha coefficient, the more the items have shared covariance and probably measure the same underlying concept.
+
+# create keys for three factors
+keys.list <- list(RecklessDriving=c("BL_YADB6","BL_YADB9","BL_YADB10","BL_YADB11","BL_YADB12","BL_YADB13","BL_YADB15","BL_YADB16","BL_YADB17"),
+                  Speeding=c("BL_YADB1","BL_YADB2","BL_YADB3","BL_YADB4","BL_YADB7","BL_YADB20","BL_YADB27","BL_YADB28"),
+                  Drinking=c("BL_YADB19","BL_YADB22","BL_YADB23","BL_YADB24","BL_YADB25","BL_YADB26")) 
+keys <- make.keys(cdata[,4:31],keys.list)
+
+scores <- scoreItems(keys,cdata[,4:31])
 
 
 
