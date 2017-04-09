@@ -166,7 +166,9 @@ plot(1:15, perc_explained, type="b", xlab="Number of Clusters",
      ylab="Percent of Variance explained")
 
 # 3) Bing in external variables (gender/age/experience)
-
+with(model2, table(cluster,cdata$GENDER))
+with(model2, table(cluster,cdata$DRIVERLICENSE1))
+with(model2, table(cluster,cdata$AGE_LIST))
 # 4) Pretty plots
 
 # Not so pretty
