@@ -129,7 +129,7 @@ keys.list <- list(Reckless=c("BL_YADB16","BL_YADB17","BL_YADB4","BL_YADB18","BL_
                   Intoxicated=c("BL_YADB24","BL_YADB22","BL_YADB26","BL_YADB21","BL_YADB19")) 
 keys <- make.keys(cdata[,4:31],keys.list)
 
-scores <- scoreItems(keys,cdata[,4:31])
+alpha_scores <- scoreItems(keys,cdata[,4:31])
 
 
 
@@ -154,7 +154,7 @@ model2 <- kmeans(efa_splits$scores, centers = 3, nstart = 100)
 
 # 2) Choose number of clusters
 
-# 3) Bing in external variables (gender/age/experience)
+# 3) Bring in external variables (gender/age/experience)
 
 # 4) Pretty plots
 
