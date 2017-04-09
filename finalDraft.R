@@ -40,6 +40,11 @@ data2$BL_YADB5 <- as.numeric(levels(data2$BL_YADB5))[data2$BL_YADB5]
 data2$BL_YADB5 == data$BL_YADB5
 str(data2)
 
+# turn columns 1:3 into factors so they are imputed as whole numbers
+data2$AGE_LIST <- as.factor(data2$AGE_LIST)
+data2$GENDER <- as.factor(data2$GENDER)
+data2$DRIVERLICENSE1 <- as.factor(data2$DRIVERLICENSE1)
+
 # create a complete dataset to compare imputed dataset to 
 comp <- data2[-which(rowSums(is.na(data2)) > 0),]
 #imput missing values
