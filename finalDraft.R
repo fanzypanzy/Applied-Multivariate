@@ -154,10 +154,16 @@ model2 <- kmeans(efa_splits$scores, centers = 3, nstart = 100)
 
 # 2) Choose number of clusters
 wss <- (nrow(efa_splits$scores)-1)*sum(apply(efa_splits$scores,2,var))
-for (i in 2:15) wss[i] <- sum(kmeans(efa_splits$scores, 
-                                     centers=i)$withinss)
+perc_explained <- c()
+for (i in 2:15){
+  mycluster <- kmeans(efa_splits$scores, centers=i)
+  wss[i] <- sum(mycluster$withinss)
+  perc_explained[i] <- mycluster$betweenss/mycluster$totss
+  }
 plot(1:15, wss, type="b", xlab="Number of Clusters",
      ylab="Within groups sum of squares")
+plot(1:15, perc_explained, type="b", xlab="Number of Clusters",
+     ylab="Percent of Variance explained")
 
 # 3) Bing in external variables (gender/age/experience)
 
