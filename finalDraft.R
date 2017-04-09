@@ -123,9 +123,10 @@ fa.diagram(efa_splits) # shows contents of each factor
 # the higher the alpha coefficient, the more the items have shared covariance and probably measure the same underlying concept.
 
 # create keys for three factors
-keys.list <- list(RecklessDriving=c("BL_YADB6","BL_YADB9","BL_YADB10","BL_YADB11","BL_YADB12","BL_YADB13","BL_YADB15","BL_YADB16","BL_YADB17"),
-                  Speeding=c("BL_YADB1","BL_YADB2","BL_YADB3","BL_YADB4","BL_YADB7","BL_YADB20","BL_YADB27","BL_YADB28"),
-                  Drinking=c("BL_YADB19","BL_YADB22","BL_YADB23","BL_YADB24","BL_YADB25","BL_YADB26")) 
+keys.list <- list(Reckless=c("BL_YADB16","BL_YADB17","BL_YADB4","BL_YADB18","BL_YADB14","BL_YADB12","BL_YADB15","BL_YADB6","BL_YADB1",
+                            "BL_YADB5", "BL_YADB10"),
+                  Distracted=c("BL_YADB27","BL_YADB28","BL_YADB2","BL_YADB8","BL_YADB3","BL_YADB20"),
+                  Intoxicated=c("BL_YADB24","BL_YADB22","BL_YADB26","BL_YADB21","BL_YADB19")) 
 keys <- make.keys(cdata[,4:31],keys.list)
 
 scores <- scoreItems(keys,cdata[,4:31])
