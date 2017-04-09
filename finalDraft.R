@@ -7,6 +7,9 @@ library(mlr)
 library(psych)
 library(GPArotation)
 library(HapEstXXR)
+library(nFactors)
+library(cluster)
+library(rgl)
 # TODO: Check that we're actually using each library
 ####################### DATA CLEANING #############################
 
@@ -74,8 +77,11 @@ efa_pro <- fa(cdata[,4:31], nfactors = 3, rotate = "promax", scores = T, fm = "p
 
 
 #2. Choose number of factors (-> Liangliang code)
-fa.parallel(cdata[,4:31], fa = "fa", n.iter = 100, show.legend = FALSE) # shows number of factors to use
-
+ev <- eigen(cor(cdata[,4:31])) # get eigenvalues
+ap <- parallel(subject = nrow(cdata[,4:31]),var = ncol(cdata[,4:31]),
+               rep=100,cent=.05)
+nS <- nScree(x = ev$values, aparallel = ap$eigen$qevpea)
+plotnScree(nS)
 
 
 #3. decide how to deal with complex items
@@ -136,12 +142,25 @@ scores <- scoreItems(keys,cdata[,4:31])
 
 # 1) Choose method (2 step, hierarchical, k-means,...)
 
+# Hierarchical clusters
+dist.e <- dist(efa_splits$scores, method = 'euclidean')
+model1 <- hclust(dist.e, method = 'ward')
+result <- cutree(model1, k=3)
+
+# k-means clusters
+model2 <- kmeans(efa_splits$scores, centers = 3, nstart = 100)
+
 # 2) Choose number of clusters
 
 # 3) Bing in external variables (gender/age/experience)
 
 # 4) Pretty plots
 
+# Not so pretty
+clusplot(efa_splits$scores, result, color = TRUE, shade = TRUE, labels = 2, lines = 0)
+clusplot(efa_splits$scores, model2$cluster, color = TRUE, shade = TRUE, labels = 2, lines = 0)
+plot3d(efa_splits$scores[,1:3], col=model2$cluster, main="k-means clusters")
+plot3d(efa_splits$scores[,1:3], col=result, main="Hierarchical clusters")
 
 
 
