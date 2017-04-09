@@ -153,8 +153,13 @@ result <- cutree(model1, k=3)
 model2 <- kmeans(efa_splits$scores, centers = 3, nstart = 100)
 
 # 2) Choose number of clusters
+wss <- (nrow(efa_splits$scores)-1)*sum(apply(efa_splits$scores,2,var))
+for (i in 2:15) wss[i] <- sum(kmeans(efa_splits$scores, 
+                                     centers=i)$withinss)
+plot(1:15, wss, type="b", xlab="Number of Clusters",
+     ylab="Within groups sum of squares")
 
-# 3) Bring in external variables (gender/age/experience)
+# 3) Bing in external variables (gender/age/experience)
 
 # 4) Pretty plots
 
