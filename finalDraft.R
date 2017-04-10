@@ -160,6 +160,9 @@ result <- cutree(model1, k=3)
 set.seed(31983)
 model2 <- kmeans(efa_splits$scores, centers = 3, nstart = 100)
 
+# TODO: Discuss again (see lecture today)!!! Results are quite different, apparently k-means is better (Janine)
+
+
 # 2) Choose number of clusters
 wss <- (nrow(efa_splits$scores)-1)*sum(apply(efa_splits$scores,2,var))
 perc_explained <- c()
