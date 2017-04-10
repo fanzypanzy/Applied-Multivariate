@@ -12,6 +12,8 @@ library(cluster)
 library(rgl)
 library(plot3D)
 library(RColorBrewer)
+library(GGally)
+library(ggplot2)
 # TODO: Check that we're actually using each library
 ####################### DATA CLEANING #############################
 
@@ -206,6 +208,27 @@ plot3d(efa_splits$scores[,1:3], col=result, main="Hierarchical clusters")
 
 pairs(efa_splits$scores[,1:3], col=model2$cluster, labels = c("reckless", "intoxicated", "distracted"),
       pch = cdata$GENDER)
+
+# same thing in pretty:
+
+plotclusters <- data.frame(PA1 = efa_splits$scores[,1], PA2 = efa_splits$scores[,3],
+                           PA3 = efa_splits$scores[,2], cluster = as.factor(model2$cluster))
+p <- ggpairs(data=plotclusters, columns = 1:3,
+        mapping=ggplot2::aes(colour = cluster),
+        columnLabels = c("reckless","distracted", "intoxicated"),
+        upper = list(continuous = "density"),
+        title = "Pairs plot grouped by cluster (k-means)")
+for(i in 1:p$nrow) {
+  for(j in 1:p$ncol){
+    p[i,j] <- p[i,j] + 
+      scale_fill_manual(values=brewer.pal(6, "Set1")) +
+      scale_color_manual(values=brewer.pal(6, "Set1"))  
+  }
+}
+p
+
+
+
 
 # Pretty 3D plots (not done yet)
 
