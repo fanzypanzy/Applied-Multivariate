@@ -124,7 +124,7 @@ fa.diagram(efa_splits) # shows contents of each factor
 # 4) Defining factors as indices or scales using Crohnbach's alpha (-> Zhenming)
 
 # Cronbach’s alpha is computed by correlating the score for each scale item with the total score for each observation 
-# (usually individual survey respondents or test takers), and then comparing that to the variance for all individual item scores:
+# (usually individual survey respondents or test takers), and then comparing that to the variance for all individual item scores.
 
 # The resulting alpha coefficient of reliability ranges from 0 to 1 in providing this overall assessment of a measure’s reliability. 
 # the higher the alpha coefficient, the more the items have shared covariance and probably measure the same underlying concept.
@@ -138,8 +138,13 @@ keys <- make.keys(cdata[,4:31],keys.list)
 
 alpha_scores <- scoreItems(keys,cdata[,4:31])
 
-
-
+# Interpreting of scoreItems results
+# Cronbach’s alpha is always used to test reliability of questionnairs (If different questions have same underlying concept, then answers
+# of these questions are tends to be same). In our case, we can use it to check if it is acceptable to group those driving types in a factor.
+# Alpha >= 0.9 means excellent, alpha >= 0.8 means good, alpha >= 0.7 means acceptable, alpha < 0.5 means unacceptable.
+# Cronbach’s alpha is calculated by estimating the true variance of each item as the average covariance between items while in Guttman 
+# lambda 6 the amount of variance in each item are accounted for by the linear regression of all other items.
+# Signal/Noise is the ratio of reliable variance to unreliable variance 
 
 # 5) Find names for factors
 
