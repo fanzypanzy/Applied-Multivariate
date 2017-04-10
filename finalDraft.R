@@ -260,6 +260,10 @@ scatter3D(efa_splits$scores[,1], efa_splits$scores[,2], efa_splits$scores[,3], b
 
 
 
+library(caret)
+r <- lowerCor(cdata)
+corPlot(r)
+findCorrelation(r)
 
 
 
