@@ -79,6 +79,22 @@ cdata <- cdata[,-1] # remove ID row from CSV
 
 ########################### ANALYSIS ################################################
 
+####### PCA and qgraph
+pc <- princomp(cdata[,4:31])
+summary(pc)
+pc$loadings  #eigenvectors
+pc$sdev^2   #eigenvalues
+pc$scores
+screeplot(pc, col = "red", pch = 16, type = "lines", cex = 2, lwd = 2, maiin = "")
+biplot(pc,col=c(2,3),  xlab = "First principal component", ylab = "Second principal component", main = "Biplot")
+
+library(qgraph)
+qgraph(cor(cdata[,4:31]))
+qgraph.pca(cor(cdata[,4:31]),rotation = "varimax",factors=3,factorCors=T)
+
+
+
+
 ####### A. FACTOR ANALYSIS
 
 #1. a) choose rotation (rotate = ), extraction method (fm = ), and method to calculate factor scores (scores = )
