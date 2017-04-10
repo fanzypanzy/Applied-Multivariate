@@ -42,10 +42,10 @@ data2$BL_YADB5 <- as.numeric(levels(data2$BL_YADB5))[data2$BL_YADB5]
 data2$BL_YADB5 == data$BL_YADB5
 str(data2)
 
-# turn columns 1:3 into factors so they are imputed as whole numbers
-data2$AGE_LIST <- as.factor(data2$AGE_LIST)
+# turn column GENDER into factor so they are imputed as whole numbers
+
 data2$GENDER <- as.factor(data2$GENDER)
-data2$DRIVERLICENSE1 <- as.factor(data2$DRIVERLICENSE1)
+
 
 # create a complete dataset to compare imputed dataset to 
 comp <- data2[-which(rowSums(is.na(data2)) > 0),]
@@ -65,9 +65,14 @@ cdata <- cbind(im.out.2$ximp)
 stopCluster(cl)
 sum(is.na(cdata))
 
+# round driver experience and age columns so they are whole numbers
+cdata$AGE_LIST <- round(cdata$AGE_LIST)
+cdata$DRIVERLICENSE1 <- round(cdata$DRIVERLICENSE1)
+
+# write csv
 write.csv(cdata, "imputed_dat.csv") 
 cdata <- read.csv("imputed_dat.csv")
-cdata <- cdata[,-1]
+cdata <- cdata[,-1] # remove ID row from CSV
 
 
 
