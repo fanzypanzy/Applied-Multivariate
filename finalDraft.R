@@ -14,6 +14,7 @@ library(plot3D)
 library(RColorBrewer)
 library(GGally)
 library(ggplot2)
+library(clues)
 # TODO: Check that we're actually using each library
 ####################### DATA CLEANING #############################
 
@@ -188,36 +189,47 @@ plot(1:15, wss, type="b", xlab="Number of Clusters",
 plot(1:15, perc_explained, type="b", xlab="Number of Clusters",
      ylab="Percent of Variance explained")
 
-# Look at gap statistic and CH index as criteria. Function for gap is clusGap.
-# I can't get it to work for hierarchical though (Fanny). Also don't really understand it
-# http://www.stat.cmu.edu/~ryantibs/datamining/lectures/06-clus3.pdf
+# Ch index
+ch <- c()
+for(i in 1:10){
+  mymodel <- kmeans(efa_splits$scores, centers = i, nstart = 100)
+  ch[i] <- get_CH(y = efa_splits$scores, mem = mymodel$cluster, disMethod = "Euclidean")
+}
+plot(ch)
+# suggests 5
+
+# Gap statistic ( http://www.stat.cmu.edu/~ryantibs/datamining/lectures/06-clus3.pdf)
 
 gaps <- clusGap(efa_splits$scores,
         FUN = kmeans, 
         K.max = 20, 
-        B = 20)
+        B = 100)
 plot(gaps$Tab[,3])
+
+# Build model with 5 clusters
+set.seed(3289)
+model5 <- kmeans(efa_splits$scores, centers = 5, nstart = 100)
 
 
 # 3) Bing in external variables (gender/age/experience)
-with(model2, table(cluster,cdata$GENDER))
-with(model2, table(cluster,cdata$DRIVERLICENSE1))
-with(model2, table(cluster,cdata$AGE_LIST))
+with(model5, table(cluster,cdata$GENDER))
+with(model5, table(cluster,cdata$DRIVERLICENSE1))
+with(model5, table(cluster,cdata$AGE_LIST))
 # 4) Pretty plots
 
 # Not so pretty
 clusplot(efa_splits$scores, result, color = TRUE, shade = TRUE, labels = 2, lines = 0)
-clusplot(efa_splits$scores, model2$cluster, color = TRUE, shade = TRUE, labels = 2, lines = 0)
-plot3d(efa_splits$scores[,1:3], col=model2$cluster, main="k-means clusters")
+clusplot(efa_splits$scores, model5$cluster, color = TRUE, shade = TRUE, labels = 2, lines = 0)
+plot3d(efa_splits$scores[,1:3], col=model5$cluster, main="k-means clusters")
 plot3d(efa_splits$scores[,1:3], col=result, main="Hierarchical clusters")
 
-pairs(efa_splits$scores[,1:3], col=model2$cluster, labels = c("reckless", "intoxicated", "distracted"),
+pairs(efa_splits$scores[,1:3], col=model5$cluster, labels = c("reckless", "intoxicated", "distracted"),
       pch = cdata$GENDER)
 
 # same thing in pretty:
 
 plotclusters <- data.frame(PA1 = efa_splits$scores[,1], PA2 = efa_splits$scores[,3],
-                           PA3 = efa_splits$scores[,2], cluster = as.factor(model2$cluster))
+                           PA3 = efa_splits$scores[,2], cluster = as.factor(model5$cluster))
 p <- ggpairs(data=plotclusters, columns = 1:3,
         mapping=ggplot2::aes(colour = cluster),
         columnLabels = c("reckless","distracted", "intoxicated"),
@@ -226,8 +238,8 @@ p <- ggpairs(data=plotclusters, columns = 1:3,
 for(i in 1:p$nrow) {
   for(j in 1:p$ncol){
     p[i,j] <- p[i,j] + 
-      scale_fill_manual(values=brewer.pal(6, "Set1")) +
-      scale_color_manual(values=brewer.pal(6, "Set1"))  
+      scale_fill_manual(values=brewer.pal(5, "Set1")) +
+      scale_color_manual(values=brewer.pal(5, "Set1"))  
   }
 }
 p
@@ -236,16 +248,15 @@ p
 
 
 # Pretty 3D plots (not done yet)
-
 scatter3D(efa_splits$scores[,1], efa_splits$scores[,2], efa_splits$scores[,3], bty = "g", pch = 18, 
-          col.var = model2$cluster, 
-          col = brewer.pal(6, "Dark2"),
+          col.var = model5$cluster, 
+          col = brewer.pal(5, "Set1"),
           pch = 18, ticktype = "detailed",
-          colkey = list(side = 2, at = 1:6, length = 1, width = 1,
-                        labels = c("setosa", "versicolor", "virginica", "a", "b", "c")),
-          theta = 30, phi = 25,
-          xlab = "Reckless", ylab = "Intoxicated", zlab = "Distracted")
-
+          colkey = list(side = 2, length = 1, width = 1, at = seq(from = -1.3, to = 7, length.out = 5),
+                        labels = c("Cluster 1", "Cluster 2", "Cluster 3", "Cluster 4", "Cluster 5")),
+          theta = 30, phi = 40,
+          xlab = "Reckless", ylab = "Intoxicated", zlab = "Distracted",
+          alpha = 1, type = "p")
 
 
 
