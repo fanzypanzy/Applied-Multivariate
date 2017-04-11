@@ -17,6 +17,7 @@ library(ggplot2)
 library(clues)
 library(qgraph)
 library(caret)
+library(NbClust)
 # TODO: Check that we're actually using each library
 ####################### DATA CLEANING #############################
 
@@ -215,13 +216,11 @@ for(i in 1:10){
 plot(ch)
 # suggests 5
 
-# Gap statistic ( http://www.stat.cmu.edu/~ryantibs/datamining/lectures/06-clus3.pdf)
+# Duda and Hart's index (only works with hierarchical, so tried with ward.D method)
 
-gaps <- clusGap(efa_splits$scores,
-        FUN = kmeans, 
-        K.max = 20, 
-        B = 100)
-plot(gaps$Tab[,3])
+dh <- NbClust(efa_splits$scores, method = "ward.D")
+# suggests 4 (and definitely not 5...)
+
 
 # Build model with 5 clusters
 set.seed(3289)
