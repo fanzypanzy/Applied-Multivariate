@@ -18,6 +18,7 @@ library(clues)
 library(qgraph)
 library(caret)
 library(NbClust)
+library(Amelia)
 # TODO: Check that we're actually using each library
 ####################### DATA CLEANING #############################
 
@@ -26,6 +27,8 @@ ddata <- read.csv("road.csv")
 ddata[ddata== 99] <- NA
 ddata[ddata ==98] <- NA
 sum(is.na(ddata))
+
+missmap(ddata)
 
 # removing the rows with more than 18 observations
 d <- ddata[-which(rowSums(is.na(ddata)) > 18), ]
