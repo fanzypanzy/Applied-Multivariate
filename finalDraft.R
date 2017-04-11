@@ -15,6 +15,8 @@ library(RColorBrewer)
 library(GGally)
 library(ggplot2)
 library(clues)
+library(qgraph)
+library(caret)
 # TODO: Check that we're actually using each library
 ####################### DATA CLEANING #############################
 
@@ -88,7 +90,6 @@ pc$scores
 screeplot(pc, col = "red", pch = 16, type = "lines", cex = 2, lwd = 2, maiin = "")
 biplot(pc,col=c(2,3),  xlab = "First principal component", ylab = "Second principal component", main = "Biplot")
 
-library(qgraph)
 qgraph(cor(cdata[,4:31]))
 qgraph.pca(cor(cdata[,4:31]),rotation = "varimax",factors=3,factorCors=T)
 
@@ -276,7 +277,7 @@ scatter3D(efa_splits$scores[,1], efa_splits$scores[,2], efa_splits$scores[,3], b
 
 
 
-library(caret)
+# Inter-item correlation - maybe moce this further up (kind of exploratory)
 r <- lowerCor(cdata)
 corPlot(r)
 findCorrelation(r)
