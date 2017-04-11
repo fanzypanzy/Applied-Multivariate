@@ -216,6 +216,12 @@ for(i in 1:10){
 plot(ch)
 # suggests 5
 
+gaps <- clusGap(efa_splits$scores,
+        FUN = kmeans, 
+        K.max = 20, 
+        B = 100)
+plot(gaps$Tab[,3])
+
 # Duda and Hart's index (only works with hierarchical, so tried with ward.D method)
 
 dh <- NbClust(efa_splits$scores, method = "ward.D")
