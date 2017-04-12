@@ -91,11 +91,12 @@ summary(pc)
 pc$loadings  #eigenvectors
 pc$sdev^2   #eigenvalues
 pc$scores
-screeplot(pc, col = "red", pch = 16, type = "lines", cex = 2, lwd = 2, maiin = "")
-biplot(pc,col=c(2,3),  xlab = "First principal component", ylab = "Second principal component", main = "Biplot")
+screeplot(pc, col ="#4DAF4A", pch = 16, type = "lines", cex = 2, lwd = 2, main = "Screeplot for PCA")
+biplot(pc,xlab = "First principal component", ylab = "Second principal component", main = "Biplot",
+       col = c("#377EB8", "#E41A1C"), cex = c(0.5,1), ylabs = 1:28, xlabs = 1:756)
 
-qgraph(cor(cdata[,4:31]))
-qgraph.pca(cor(cdata[,4:31]),rotation = "varimax",factors=3,factorCors=T)
+qgraph(cor(cdata[,4:31]), labels = 1:28)
+qgraph.pca(cor(cdata[,4:31]),rotation = "varimax",factors=3,factorCors=T, labels = 1:28)
 
 
 
