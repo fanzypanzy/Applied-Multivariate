@@ -136,6 +136,16 @@ ap <- parallel(subject = nrow(cdata[,4:31]),var = ncol(cdata[,4:31]),
 nS <- nScree(x = ev$values, aparallel = ap$eigen$qevpea)
 plotnScree(nS)
 
+# same thing in pretty
+scree <- data.frame(nofactors = 1:28, eigen = nS$Analysis$Eigenvalues, parallel = nS$Analysis$Par.Analysis)
+meltedScree<- melt(scree, id.vars = "nofactors")
+ggplot(meltedScree, aes(x = nofactors, y =value, col = variable)) +
+  geom_line() +
+  geom_point() +
+  scale_color_manual(values = c("#4DAF4A", "#FF7F00"))
+
+
+
 
 #3. decide how to deal with complex items
 colnum <- c(22, 8, 18 , 11, 9, 25, 13, 23, 5, 14, 7) # vector with all of the complex items from the intial FA with "varimax"
