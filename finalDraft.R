@@ -19,6 +19,7 @@ library(qgraph)
 library(caret)
 library(NbClust)
 library(Amelia)
+library(reshape2)
 # TODO: Check that we're actually using each library
 ####################### DATA CLEANING #############################
 
@@ -88,6 +89,16 @@ cdata <- cdata[,-1] # remove ID row from CSV
 
 
 ########################### ANALYSIS ################################################
+
+####### Exploratory Analysis
+newnames2 <- cdata
+names(newnames2) <- c("Gender", "Age", "Experience", 1:28)
+melted<- melt(newnames2[,4:31])
+ggplot(melted,aes(x=variable, y=value, fill=variable)) + geom_boxplot() +
+  xlab("Item") + theme(legend.position="none") + ggtitle("Boxplots for Answers to All Items")
+  
+
+
 
 ####### PCA and qgraph
 pc <- princomp(cdata[,4:31])
