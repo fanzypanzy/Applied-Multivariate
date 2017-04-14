@@ -165,6 +165,28 @@ loadings(efa_splits)
 factor.plot(efa_splits, labels = rownames(efa_splits$loadings)) #?? should be
 fa.diagram(efa_splits) # shows contents of each factor
 
+# make this pretty
+
+itemToFactor <- apply(loadings(efa_splits)[1:22,c(1,3,2)], 1, which.max)
+factors <- data.frame(loadings(efa_splits)[1:22,c(1,3,2)], factor = as.factor(itemToFactor), item = 1:22)
+
+p <- ggpairs(data = factors, columns = 1:3,
+        mapping= ggplot2::aes(colour = factor),
+        upper = list(continuous = "blank"),
+        diag = list(continuous = "densityDiag"),
+        title = "Loadings of items on factors",
+        columnLabels = c("Factor 1","Factor 2", "Factor 3"))
+for(i in 1:p$nrow) {
+  for(j in 1:p$ncol){
+    p[i,j] <- p[i,j] + 
+      scale_color_brewer(palette =  "Set1") +
+      scale_fill_brewer(palette =  "Set1")
+  }
+}
+p
+
+
+
 
 # 4) Defining factors as indices or scales using Crohnbach's alpha (-> Zhenming)
 
