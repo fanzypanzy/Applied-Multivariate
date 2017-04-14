@@ -28,7 +28,11 @@ ddata[ddata== 99] <- NA
 ddata[ddata ==98] <- NA
 sum(is.na(ddata))
 
-missmap(ddata)
+newnames <- ddata
+names(newnames) <- c("ID", "Group", "Gender", "Age", "Experience", 1:28)
+missmap(newnames, col = c("#FFFF33", "#377EB8"), legend = FALSE,
+        y.labels = "Obs.", y.at = 300, rank.order = FALSE)
+
 
 # removing the rows with more than 18 observations
 d <- ddata[-which(rowSums(is.na(ddata)) > 18), ]
