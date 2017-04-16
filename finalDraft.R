@@ -127,7 +127,8 @@ qgraph.pca(cor(cdata[,4:31]),rotation = "varimax",factors=3,factorCors=T, labels
 efa_var <- fa(cdata[,4:31], nfactors = 3, rotate = "varimax", scores = T, fm = "pa")# factor analysis with n selected factors
 efa_pro <- fa(cdata[,4:31], nfactors = 3, rotate = "promax", scores = T, fm = "pa") #
 
-
+print(fa(cdata[,4:31], rotate = "varimax", nfactors = 3))$Vaccounted # 0.49 explained
+print(fa(cdata[,4:31], rotate = "promax", nfactors = 3))$Vaccounted # 0.49 explained
 
 #2. Choose number of factors (-> Liangliang code)
 ev <- eigen(cor(cdata[,4:31])) # get eigenvalues
