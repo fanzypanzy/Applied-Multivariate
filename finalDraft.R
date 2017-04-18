@@ -226,6 +226,8 @@ keys <- make.keys(cdata[,4:31],keys.list)
 
 alpha_scores <- scoreItems(keys,cdata[,4:31])
 
+cor(efa_splits$scores)
+
 # Interpreting of scoreItems results
 # Cronbach’s alpha is always used to test reliability of questionnairs (If different questions have same underlying concept, then answers
 # of these questions are tends to be same). In our case, we can use it to check if it is acceptable to group those driving types in a factor.
