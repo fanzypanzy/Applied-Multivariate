@@ -20,6 +20,7 @@ library(caret)
 library(NbClust)
 library(Amelia)
 library(reshape2)
+library(corrplot)
 # TODO: Check that we're actually using each library
 ####################### DATA CLEANING #############################
 
@@ -97,8 +98,17 @@ melted<- melt(newnames2[,4:31])
 ggplot(melted,aes(x=variable, y=value, fill=variable)) + geom_boxplot() +
   xlab("Item") + theme(legend.position="none") + ggtitle("Boxplots for Answers to All Items")
   
+ggplot(cdata,aes(x=GENDER)) + geom_bar(aes(fill = GENDER), fill=c("#377EB8","#E41A1C")) +
+  scale_x_discrete(labels=c("0" = "Male", "1" = "Female")) +
+  ggtitle("Gender")
 
+ggplot(cdata,aes(x=as.factor(AGE_LIST))) + geom_bar(fill=c("#4DAF4A")) +
+  ggtitle("Age") + xlab("Age (in years)")
 
+ggplot(cdata,aes(x=as.factor(DRIVERLICENSE1))) + geom_bar(fill=c("#FF7F00")) +
+  ggtitle("Experience") + xlab("Driving experience (in months)")
+
+corrplot(cor(cdata[,4:31]), tl.col = "black")
 
 ####### PCA and qgraph
 pc <- princomp(cdata[,4:31])
