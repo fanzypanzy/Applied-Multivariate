@@ -272,12 +272,31 @@ plot(1:15, perc_explained, type="b", xlab="Number of Clusters",
      ylab="Percent of Variance explained")
 
 # Ch index
-ch <- c()
+# Ch index
+ch_k <- c()
+ch_hw <- c()
+
 for(i in 1:10){
-  mymodel <- kmeans(efa_splits$scores, centers = i, nstart = 100)
-  ch[i] <- get_CH(y = efa_splits$scores, mem = mymodel$cluster, disMethod = "Euclidean")
+  mymodel_k <- kmeans(efa_splits$scores, centers = i, nstart = 100)
+  model_hw <- hclust(dist.e, method = 'ward.D')
+  mymodel_hw <- cutree(hmodel, k=i)
+  ch_k[i] <- get_CH(y = efa_splits$scores, mem = mymodel_k$cluster, disMethod = "Euclidean")
+  ch_hw[i] <- get_CH(y = efa_splits$scores, mem = mymodel_hw, disMethod = "Euclidean")
 }
-plot(ch)
+plot(ch_k, type = "b", col = "red", ylim = c(min(ch_h, na.rm = TRUE), max(ch_k, na.rm = TRUE)))
+points(ch_hw, type = "b", col = "blue")
+
+meltedCh<- melt(data.frame(ch_k, ch_hw, noclusters = 1:10), id.vars = "noclusters")
+
+ggplot(meltedCh, aes(x = noclusters, y =value, col = variable)) +
+  geom_line() +
+  geom_point() +
+  scale_color_manual(values = c("#984EA3","#FF7F00"),
+                     name = "Method", labels = c("k-means", "hierarchical")) +
+  labs(title = "CH for various number of clusters and methods", x = "Clusters", y = "CH index") +
+  scale_x_discrete(limits = c(2,4,6,8,10))
+
+
 # suggests 5
 
 gaps <- clusGap(efa_splits$scores,
