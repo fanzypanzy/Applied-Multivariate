@@ -311,9 +311,12 @@ dh <- NbClust(efa_splits$scores, method = "ward.D")
 # suggests 4 (and definitely not 5...)
 
 
-# Build model with 5 clusters
+# Build model with 5 clusters (and others for comparison)
 set.seed(3289)
 model5 <- kmeans(efa_splits$scores, centers = 5, nstart = 100)
+model3 <- kmeans(efa_splits$scores, centers = 3, nstart = 100)
+model4 <- kmeans(efa_splits$scores, centers = 4, nstart = 100)
+model6 <- kmeans(efa_splits$scores, centers = 6, nstart = 100)
 
 
 # 3) Bing in external variables (gender/age/experience)
@@ -333,21 +336,62 @@ pairs(efa_splits$scores[,1:3], col=model5$cluster, labels = c("reckless", "intox
 
 # same thing in pretty:
 
-plotclusters <- data.frame(PA1 = efa_splits$scores[,1], PA2 = efa_splits$scores[,3],
+plotclusters3 <- data.frame(PA1 = efa_splits$scores[,1], PA2 = efa_splits$scores[,3],
+                            PA3 = efa_splits$scores[,2], cluster = as.factor(model3$cluster))
+p3 <- ggpairs(data=plotclusters3, columns = 1:3,
+              mapping=ggplot2::aes(colour = cluster),
+              columnLabels = c("reckless","distracted", "intoxicated"),
+              upper = list(continuous = "density"))
+for(i in 1:p3$nrow) {
+  for(j in 1:p3$ncol){
+    p3[i,j] <- p3[i,j] + 
+      scale_fill_manual(values=brewer.pal(3, "Set1")) +
+      scale_color_manual(values=brewer.pal(3, "Set1"))  
+  }
+}
+
+plotclusters4 <- data.frame(PA1 = efa_splits$scores[,1], PA2 = efa_splits$scores[,3],
+                            PA3 = efa_splits$scores[,2], cluster = as.factor(model4$cluster))
+p4 <- ggpairs(data=plotclusters4, columns = 1:3,
+              mapping=ggplot2::aes(colour = cluster),
+              columnLabels = c("reckless","distracted", "intoxicated"),
+              upper = list(continuous = "density"))
+for(i in 1:p4$nrow) {
+  for(j in 1:p4$ncol){
+    p4[i,j] <- p4[i,j] + 
+      scale_fill_manual(values=brewer.pal(4, "Set1")) +
+      scale_color_manual(values=brewer.pal(4, "Set1"))  
+  }
+}
+
+
+plotclusters5 <- data.frame(PA1 = efa_splits$scores[,1], PA2 = efa_splits$scores[,3],
                            PA3 = efa_splits$scores[,2], cluster = as.factor(model5$cluster))
-p <- ggpairs(data=plotclusters, columns = 1:3,
-        mapping=ggplot2::aes(colour = cluster),
-        columnLabels = c("reckless","distracted", "intoxicated"),
-        upper = list(continuous = "density"),
-        title = "Pairs plot grouped by cluster (k-means)")
-for(i in 1:p$nrow) {
-  for(j in 1:p$ncol){
-    p[i,j] <- p[i,j] + 
+p5 <- ggpairs(data=plotclusters5, columns = 1:3,
+             mapping=ggplot2::aes(colour = cluster),
+             columnLabels = c("reckless","distracted", "intoxicated"),
+             upper = list(continuous = "density"))
+for(i in 1:p5$nrow) {
+  for(j in 1:p5$ncol){
+    p5[i,j] <- p5[i,j] + 
       scale_fill_manual(values=brewer.pal(5, "Set1")) +
       scale_color_manual(values=brewer.pal(5, "Set1"))  
   }
 }
-p
+
+plotclusters6 <- data.frame(PA1 = efa_splits$scores[,1], PA2 = efa_splits$scores[,3],
+                            PA3 = efa_splits$scores[,2], cluster = as.factor(model6$cluster))
+p6 <- ggpairs(data=plotclusters6, columns = 1:3,
+              mapping=ggplot2::aes(colour = cluster),
+              columnLabels = c("reckless","distracted", "intoxicated"),
+              upper = list(continuous = "density"))
+for(i in 1:p6$nrow) {
+  for(j in 1:p6$ncol){
+    p6[i,j] <- p6[i,j] + 
+      scale_fill_manual(values=brewer.pal(6, "Set1")) +
+      scale_color_manual(values=brewer.pal(6, "Set1"))  
+  }
+}
 
 
 
