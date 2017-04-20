@@ -21,6 +21,7 @@ library(NbClust)
 library(Amelia)
 library(reshape2)
 library(corrplot)
+library(MVN)
 # TODO: Check that we're actually using each library
 ####################### DATA CLEANING #############################
 
@@ -109,6 +110,9 @@ ggplot(cdata,aes(x=as.factor(DRIVERLICENSE1))) + geom_bar(fill=c("#FF7F00")) +
   ggtitle("Experience") + xlab("Driving experience (in months)")
 
 corrplot(cor(cdata[,4:31]), tl.col = "black")
+
+# normality check
+hzTest(cdata, qqplot = TRUE)
 
 ####### PCA and qgraph
 pc <- princomp(cdata[,4:31])
