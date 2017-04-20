@@ -327,6 +327,24 @@ model6 <- kmeans(efa_splits$scores, centers = 6, nstart = 100)
 with(model5, table(cluster,cdata$GENDER))
 with(model5, table(cluster,cdata$DRIVERLICENSE1))
 with(model5, table(cluster,cdata$AGE_LIST))
+# Add plots of percentage of gender, age and experience by different clusters
+dt <- as.data.frame(with(model5, table(cluster,round(cdata$GENDER,0))))
+dt[which(dt$Var2==0),]$Freq <- dt[which(dt$Var2==0),]$Freq/sum(dt[which(dt$Var2==0),]$Freq)
+dt[which(dt$Var2==1),]$Freq <- dt[which(dt$Var2==1),]$Freq/sum(dt[which(dt$Var2==1),]$Freq)
+p <- ggplot(dt,aes(x=Var2, y=Freq, fill=cluster))+geom_bar(stat="identity",alpha=0.7)+coord_polar()+labs(title = "Percentage of different clusters with different gender", x = "gender")
+p
+dt <- as.data.frame(with(model5, table(cluster,round(cdata$DRIVERLICENSE1,0))))
+for(i in 0:12){
+  dt[which(dt$Var2==i),]$Freq <- dt[which(dt$Var2==i),]$Freq/sum(dt[which(dt$Var2==i),]$Freq)
+}
+p <- ggplot(dt,aes(x=Var2, y=Freq, fill=cluster))+geom_bar(stat="identity",alpha=0.7)+coord_polar()+labs(title = "Percentage of different clusters with different driver license (in month)", x = "Month of driver license")
+p
+dt <- as.data.frame(with(model5, table(cluster,round(cdata$AGE_LIST,0))))
+for(i in 16:21){
+  dt[which(dt$Var2==i),]$Freq <- dt[which(dt$Var2==i),]$Freq/sum(dt[which(dt$Var2==i),]$Freq)
+}
+p <- ggplot(dt,aes(x=Var2, y=Freq, fill=cluster))+geom_bar(stat="identity",alpha=0.7)+coord_polar()+labs(title = "Percentage of different clusters with different age", x = "Age")
+p
 # 4) Pretty plots
 
 # Not so pretty
